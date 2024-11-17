@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    //id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'io.github.goooler.shadow'  version '8.1.7'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+jar{
+    manifest {
+        attributes "Main-class":"org.example.Main"
+    }
+}
+
+repositories {
+    mavenCentral()
+
+    maven{
+        url "https://jitpack.io"
+        name "Jitpack"
+    }
+}
+
+dependencies {
+    shadow "com.soundicly:jnanoid-enhanced:main-SNAPSHOT"
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+shadowJar{
+    configurations =  [project.configurations.shadow]
+
+    archiveClassifier = "shadow"
+    relocate "com.soundicly.jnanoidenhanced", "org.example.libs.jnanoidenhanced"
+
+}
+
+test {
+    useJUnitPlatform()
+}
